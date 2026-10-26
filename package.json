@@ -1,0 +1,31 @@
+{
+  "name": "floating-crypto",
+  "productName": "Floating Crypto",
+  "version": "1.0.0",
+  "description": "Floating cryptocurrency price monitor powered by Binance market data",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test"
+  },
+  "keywords": [
+    "crypto",
+    "bitcoin",
+    "binance",
+    "electron",
+    "desktop",
+    "ticker"
+  ],
+  "author": "",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "lucide": "^1.61.0"
+  },
+  "devDependencies": {
+    "electron": "^40.0.0"
+  },
+  "allowScripts": {
+    "electron@40.0.0": true
+  }
+}
