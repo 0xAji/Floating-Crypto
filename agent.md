@@ -11,7 +11,10 @@
 
 ## Local settings policy
 
-- Store runtime and user-local files under the repository-local `.local/` directory.
+- During development, store runtime and user-local files under the repository-local
+  `.local/` directory.
+- Packaged builds must use `app.getPath("userData")` because the application archive is
+  read-only.
 - Keep `.local/` in `.gitignore`.
 - Generate missing settings files with validated defaults at startup. Users must not
   need to create them manually.
@@ -26,6 +29,7 @@ persistence, or window appearance.
 - Product: a small always-on-top cryptocurrency spot-price widget.
 - App and package name: `Floating Crypto` / `floating-crypto`.
 - Runtime: Electron 43 with a vanilla HTML/CSS/JavaScript renderer.
+- Packaging: Electron Builder 26, Windows x64 NSIS and portable targets.
 - Markets: active Binance Spot markets quoted in USDT.
 - Default market: `BTCUSDT`.
 - Window: frameless, transparent, starts at `378 x 292`, resizable when unlocked,
@@ -39,6 +43,7 @@ persistence, or window appearance.
 npm install
 npm start
 npm test
+npm audit
 npm run build:win
 ```
 
@@ -88,6 +93,33 @@ and portable x64 executable in `dist/`. The `dist/` directory is generated and i
 - `DISCLAIMER.md`
   - States that all source code was generated entirely by an LLM and includes the
     no-warranty and financial-monitoring limitations.
+- `package.json`
+  - Defines scripts, dependencies, Electron Builder targets, and GitHub publish metadata.
+- `.gitattributes`
+  - Keeps text files LF and PowerShell scripts CRLF.
+
+## Build and release
+
+Windows build command:
+
+```powershell
+npm run build:win
+```
+
+Expected artifacts in `dist/`:
+
+- `Floating-Crypto-Setup-<version>-x64.exe`
+- `Floating-Crypto-Portable-<version>-x64.exe`
+
+Release `v1.0.0` is published at:
+
+```text
+https://github.com/0xAji/Floating-Crypto/releases/tag/v1.0.0
+```
+
+The executables are unsigned. Do not describe them as signed and keep the SmartScreen
+warning documented in release notes. Packaged smoke tests must clear
+`ELECTRON_RUN_AS_NODE` before launching the executable.
 
 ## Persistence
 
@@ -417,7 +449,13 @@ active market.
 20. Return to full mode and confirm the previous full size is restored.
 21. Set opacity to `0%` and confirm layout outlines fade while text outline, live status,
     and control backgrounds remain opaque.
-22. Capture the window with `scripts/capture-window.ps1`.
+22. Run `npm audit` and confirm it reports no vulnerabilities.
+23. Run `npm run build:win` and confirm both x64 `.exe` artifacts are created.
+24. Clear `ELECTRON_RUN_AS_NODE`, launch the portable executable, and confirm a working
+    `Floating Crypto` window appears.
+25. Confirm the packaged build creates `settings.json` and `coins.json` under
+    `app.getPath("userData")`.
+26. Capture the window with `scripts/capture-window.ps1`.
 
 ## Cautions
 
@@ -426,5 +464,6 @@ active market.
   additional full-mode height.
 - Binance availability varies by network and region; retain both REST and WebSocket
   alternatives.
+- Windows release artifacts are unsigned. Do not claim code signing is configured.
 - `ELECTRON_RUN_AS_NODE=1` can make Electron start as Node. Clear it before launching if
   `ipcMain` is unavailable.

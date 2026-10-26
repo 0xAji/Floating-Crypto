@@ -41,7 +41,18 @@ All source code in this repository was generated entirely by a large language mo
 
 No API key is required because the app only reads public market data.
 
-## Running
+## Windows Release
+
+The current release is **v1.0.0**:
+
+- [Windows installer](https://github.com/0xAji/Floating-Crypto/releases/download/v1.0.0/Floating-Crypto-Setup-1.0.0-x64.exe)
+- [Windows portable](https://github.com/0xAji/Floating-Crypto/releases/download/v1.0.0/Floating-Crypto-Portable-1.0.0-x64.exe)
+- [Release notes](https://github.com/0xAji/Floating-Crypto/releases/tag/v1.0.0)
+
+The release targets Windows 10/11 x64. The executables are currently unsigned, so
+Windows SmartScreen may display a warning.
+
+## Running From Source
 
 ```powershell
 npm install
@@ -57,7 +68,8 @@ If Electron cannot start because `ipcMain` is unavailable, remove the
 npm run build:win
 ```
 
-This creates a 64-bit NSIS installer and portable executable in `dist/`.
+This uses Electron 43 and `electron-builder` to create a 64-bit NSIS installer and
+portable executable in `dist/`.
 
 ## Usage
 
@@ -155,6 +167,9 @@ preload.js              Restricted renderer bridge
 .local/                 Generated user settings and coin cache, ignored by Git
 .artifacts/             Generated screenshots and test artifacts, ignored by Git
 dist/                   Generated Windows packages, ignored by Git
+.gitattributes          Git line-ending policy
+DISCLAIMER.md           LLM-generated-code and no-warranty disclaimer
+package.json            Scripts, dependencies, and Windows build configuration
 src/index.html          Full and mini layouts, coin picker, and color picker
 src/styles.css          Responsive layout, modes, transparency, and controls
 src/renderer.js         Market data, UI rendering, search, dragging, and resizing
