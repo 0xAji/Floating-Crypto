@@ -215,11 +215,17 @@ function getAppearanceSettings() {
 }
 
 function getSettingsPath() {
-  return path.join(__dirname, ".local", "settings.json");
+  return path.join(getRuntimeDataDirectory(), "settings.json");
 }
 
 function getCoinCatalogPath() {
-  return path.join(__dirname, ".local", "coins.json");
+  return path.join(getRuntimeDataDirectory(), "coins.json");
+}
+
+function getRuntimeDataDirectory() {
+  return app.isPackaged
+    ? app.getPath("userData")
+    : path.join(__dirname, ".local");
 }
 
 function getCoinState() {

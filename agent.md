@@ -25,7 +25,7 @@ persistence, or window appearance.
 
 - Product: a small always-on-top cryptocurrency spot-price widget.
 - App and package name: `Floating Crypto` / `floating-crypto`.
-- Runtime: Electron 40 with a vanilla HTML/CSS/JavaScript renderer.
+- Runtime: Electron 43 with a vanilla HTML/CSS/JavaScript renderer.
 - Markets: active Binance Spot markets quoted in USDT.
 - Default market: `BTCUSDT`.
 - Window: frameless, transparent, starts at `378 x 292`, resizable when unlocked,
@@ -39,6 +39,7 @@ persistence, or window appearance.
 npm install
 npm start
 npm test
+npm run build:win
 ```
 
 Visual smoke test while the app is running:
@@ -48,6 +49,9 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\capture-window.ps1
 ```
 
 Output: `.artifacts/app-screenshot.png`.
+
+Windows packaging uses `electron-builder`. The build command creates an NSIS installer
+and portable x64 executable in `dist/`. The `dist/` directory is generated and ignored.
 
 ## File map
 
@@ -81,12 +85,19 @@ Output: `.artifacts/app-screenshot.png`.
   - Node built-in tests. Helpers must remain loadable from browser and CommonJS.
 - `scripts/capture-window.ps1`
   - Windows visual verification utility. It matches window title `Floating Crypto`.
+- `DISCLAIMER.md`
+  - States that all source code was generated entirely by an LLM and includes the
+    no-warranty and financial-monitoring limitations.
 
 ## Persistence
 
 ### Settings
 
 Path: `.local/settings.json`
+
+Packaged builds use `app.getPath("userData")` instead because files inside the application
+archive are read-only. Keep the repository-local `.local/` path for development runs and
+tests.
 
 Defaults:
 
@@ -125,6 +136,8 @@ primary display's work area.
 ### Coin catalog
 
 Path: `.local/coins.json`
+
+Packaged builds use `app.getPath("userData")` for this file as well.
 
 The renderer calls `/api/v3/exchangeInfo` at every startup, filters active spot markets
 quoted in USDT, derives price display precision from each `PRICE_FILTER.tickSize`, and

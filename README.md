@@ -5,6 +5,12 @@ Spot markets quoted in USDT. It starts with BTC/USDT and supports searchable mar
 selection, quick picks, full and mini layouts, persistent window geometry, and
 customizable appearance.
 
+## Disclaimer
+
+All source code in this repository was generated entirely by a large language model
+(LLM) under human direction. Review and test the code before relying on it. See
+[`DISCLAIMER.md`](DISCLAIMER.md) for the full disclaimer.
+
 ## Features
 
 - Live prices over Binance WebSocket with REST polling fallback.
@@ -45,6 +51,14 @@ npm start
 If Electron cannot start because `ipcMain` is unavailable, remove the
 `ELECTRON_RUN_AS_NODE` environment variable before starting the app.
 
+## Windows Build
+
+```powershell
+npm run build:win
+```
+
+This creates a 64-bit NSIS installer and portable executable in `dist/`.
+
 ## Usage
 
 - Drag full mode by the titlebar.
@@ -73,7 +87,7 @@ Price change color options:
 
 ## Persistence
 
-`.local/settings.json` stores:
+In development, `.local/settings.json` stores:
 
 - pin state
 - full or mini mode
@@ -83,8 +97,10 @@ Price change color options:
 - selected market and quick picks
 - appearance settings
 
-`.local/coins.json` stores the latest validated Binance USDT market catalog. Both files
-are generated automatically and excluded from version control.
+In development, `.local/coins.json` stores the latest validated Binance USDT market
+catalog. Installed and portable builds store the same files in Electron's writable
+user-data directory. These runtime files are generated automatically and excluded from
+version control.
 
 The app restores a saved position if enough of the window remains visible on a connected
 display. Otherwise, the window opens centered in the primary display work area.
@@ -138,6 +154,7 @@ main.js                 Electron window, menu, geometry, persistence, and IPC
 preload.js              Restricted renderer bridge
 .local/                 Generated user settings and coin cache, ignored by Git
 .artifacts/             Generated screenshots and test artifacts, ignored by Git
+dist/                   Generated Windows packages, ignored by Git
 src/index.html          Full and mini layouts, coin picker, and color picker
 src/styles.css          Responsive layout, modes, transparency, and controls
 src/renderer.js         Market data, UI rendering, search, dragging, and resizing

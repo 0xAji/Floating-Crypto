@@ -6,7 +6,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "test": "node --test"
+    "test": "node --test",
+    "build:win": "electron-builder --win nsis portable --x64"
   },
   "keywords": [
     "crypto",
@@ -16,16 +17,70 @@
     "desktop",
     "ticker"
   ],
-  "author": "",
+  "author": "0xAji",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0xAji/Floating-Crypto.git"
+  },
   "private": true,
   "dependencies": {
     "lucide": "^1.61.0"
   },
   "devDependencies": {
-    "electron": "^40.0.0"
+    "electron": "^43.8.3",
+    "electron-builder": "^26.18.0"
+  },
+  "build": {
+    "appId": "com.0xaji.floatingcrypto",
+    "productName": "Floating Crypto",
+    "asar": true,
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**/*",
+      "README.md",
+      "DISCLAIMER.md",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "artifactName": "Floating-Crypto-Setup-${version}-${arch}.${ext}",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Floating Crypto"
+    },
+    "portable": {
+      "artifactName": "Floating-Crypto-Portable-${version}-${arch}.${ext}"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "0xAji",
+      "repo": "Floating-Crypto",
+      "releaseType": "release"
+    }
   },
   "allowScripts": {
-    "electron@40.0.0": true
+    "electron@43.8.3": true
   }
 }
